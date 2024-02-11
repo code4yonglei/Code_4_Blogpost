@@ -8,7 +8,7 @@ boxLength = 10
 epsilon = 1.0  # energy in unit of k_BT
 sigma = 1.0    # distance in unit of sigma
 
-numSteps = 200
+numSteps = 150
 timeStep = 0.01
 
 temperatureRef = 1.0
@@ -21,7 +21,6 @@ for iatom in range(numAtoms):
 	positions[iatom, 0] = (iatom% 4+0.5)*(boxLength/4) + np.random.rand()*0.5
 	positions[iatom, 1] = (iatom//4+0.5)*(boxLength/4) + np.random.rand()*0.5
 velocities = np.random.rand(numAtoms, 2) - 0.5      # velocities of all particles
-print(velocities)
 
 masses = np.ones(numAtoms)                          # masses of all particles
 energies = np.zeros(numAtoms)                       # energies of all particles
