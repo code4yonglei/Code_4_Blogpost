@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+
+#################################################
+#                                               #
+#               Author: YL WANG                 #
+#               Date: 2024-Feb-12               #
+#                                               #
+#################################################
+
 import numpy as np
 import matplotlib.pyplot as plt
 
