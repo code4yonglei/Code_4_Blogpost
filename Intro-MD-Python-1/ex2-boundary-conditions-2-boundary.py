@@ -15,7 +15,7 @@ timeStep = 0.5
 def update_positions(positions, velocities, timeStep):
 	for iatom in range(numAtoms):
 		for col in [0, 1]:
-			positions[iatom, col] += timeStep * velocities[iatom, col]
+			positions[iatom, col] += timeStep*velocities[iatom, col]
 
 
 boundaryCondition = 'periodic' # `periodic` or `reflective`

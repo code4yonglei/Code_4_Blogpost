@@ -18,21 +18,21 @@ np.random.seed(numAtoms)
 # 16 particles are generated on regular 4x4 lattices
 positions = np.zeros((numAtoms, 2))
 for iatom in range(numAtoms):
-	positions[iatom, 0] = (iatom% 4+0.5) * (boxLength/4) + np.random.rand()*0.5
-	positions[iatom, 1] = (iatom//4+0.5) * (boxLength/4) + np.random.rand()*0.5
-velocities = np.random.rand(numAtoms, 2) - 0.5     # velocities of all particles
+	positions[iatom, 0] = (iatom% 4+0.5)*(boxLength/4) + np.random.rand()*0.5
+	positions[iatom, 1] = (iatom//4+0.5)*(boxLength/4) + np.random.rand()*0.5
+velocities = np.random.rand(numAtoms, 2) - 0.5      # velocities of all particles
 print(velocities)
 
-masses = np.ones(numAtoms)                         # masses of all particles
-energies = np.zeros(numAtoms)                      # energies of all particles
-forces = np.zeros((numAtoms, 2))                   # forces of all particles
-accelerations = np.zeros((numAtoms, 2))            # accelerations of all particles
+masses = np.ones(numAtoms)                          # masses of all particles
+energies = np.zeros(numAtoms)                       # energies of all particles
+forces = np.zeros((numAtoms, 2))                    # forces of all particles
+accelerations = np.zeros((numAtoms, 2))             # accelerations of all particles
 
 
 def update_positions(positions, velocities, timeStep):
 	for iatom in range(numAtoms):
 		for col in [0, 1]:
-			positions[iatom, col] += timeStep * velocities[iatom, col]
+			positions[iatom, col] += timeStep*velocities[iatom, col]
 
 
 boundaryCondition = 'periodic' # `periodic` or `reflective`
@@ -66,15 +66,13 @@ def lj_potential(energies, forces, positions, epsilon, sigma):
 				dist_square += dist_col**2
 			dist = math.sqrt(dist_square)
 
-			energy = 4.0 * epsilon * ((sigma / dist)**12 - (sigma / dist)**6)
+			energy = 4.0*epsilon*((sigma/dist)**12 - (sigma/dist)**6)
 			energies[iatom] += 0.5*energy # Accumulate energy
 			energies[jatom] += 0.5*energy 
 
-			force_repulsion = 48.0 * epsilon * (sigma / dist)**12  # np.power(sigma, 12) / np.power(dist, 12) 
-			force_attraction = -24.0 * epsilon * (sigma / dist)**6 # np.power(sigma, 6) / np.power(dist, 6)
+			force_repulsion = 48.0*epsilon*(sigma/dist)**12
+			force_attraction = -24.0*epsilon*(sigma/dist)**6
 			force = force_repulsion + force_attraction
-
-			#print('01010---', iatom, jatom, dist, energy, force)
 
 			for col in [0, 1]:
 				dist_col = positions[iatom, col] - positions[jatom, col]
@@ -82,18 +80,15 @@ def lj_potential(energies, forces, positions, epsilon, sigma):
 					dist_col -= boxLength
 				if dist_col < -boxLength/2.0:
 					dist_col += boxLength
-				forces[iatom, col] += (force * dist_col / dist_square)
-				forces[jatom, col] -= (force * dist_col / dist_square)
+				forces[iatom, col] += (force*dist_col/dist_square)
+				forces[jatom, col] -= (force*dist_col/dist_square)
 
 
 def update_velocities(forces, masses, accelerations, velocities, timeStep):
-	#print('00000---', velocities, accelerations)
 	for iatom in range(numAtoms):
 		for col in [0, 1]:
 			accelerations[iatom, col] = forces[iatom, col]/masses[iatom]
 			velocities[iatom, col] += accelerations[iatom, col]*timeStep
-			#print(iatom, col, forces[iatom, col], masses[iatom])
-	#print('11111---', velocities, accelerations)
 
 
 def thermostat(velocities, masses, temperatureRef):
@@ -102,13 +97,11 @@ def thermostat(velocities, masses, temperatureRef):
 		ke_temp = 0.0
 		for col in [0, 1]:
 			ke_temp += velocities[iatom, col]**2
-			#print(iatom, col, velocities[iatom, col], ke_temp)
-		ke_temp *= 0.5 * masses[iatom]
+		ke_temp *= 0.5*masses[iatom]
 		kineticEnergy += ke_temp
 	temperatureTemp = kineticEnergy*2.0/(2.0*numAtoms)
 
-	scaling_factor = math.sqrt(temperatureRef / temperatureTemp)
-	#print(temperatureRef, temperatureTemp, scaling_factor)
+	scaling_factor = math.sqrt(temperatureRef/temperatureTemp)
 	for iatom in range(numAtoms):
 		for col in [0, 1]:
 			velocities[iatom, col] *= scaling_factor

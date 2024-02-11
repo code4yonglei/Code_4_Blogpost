@@ -6,12 +6,12 @@ sigma = 1.0    # distance in units of sigma
 
 
 def lj_potential(r, epsilon, sigma):
-    energy_replusion = 4.0 * epsilon * (sigma / r)**12
-    energy_attraction = -4.0 * epsilon * (sigma / r)**6
+    energy_replusion = 4.0*epsilon*(sigma/r)**12
+    energy_attraction = -4.0*epsilon*(sigma/r)**6
     energy = energy_replusion - energy_attraction
-    energy = 4.0 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
-    force_repulsion = 48.0 * epsilon * np.power(sigma, 12) / np.power(r, 13) 
-    force_attraction = -24.0 * epsilon * np.power(sigma, 6) / np.power(r, 7)
+    energy = 4.0*epsilon*((sigma/r)**12 - (sigma/r)**6)
+    force_repulsion = 48.0*epsilon*np.power(sigma, 12)/np.power(r, 13) 
+    force_attraction = -24.0*epsilon*np.power(sigma, 6)/np.power(r, 7)
     force = force_repulsion + force_attraction
     return energy, force
 
