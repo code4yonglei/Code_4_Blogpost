@@ -22,9 +22,11 @@ np.random.seed(numAtoms)
 # positions = np.random.rand(numAtoms, 2)*boxLength # positions of all particles
 # 16 particles are generated on regular 4x4 lattices
 positions = np.zeros((numAtoms, 2))
+numLatticesX = round(math.sqrt(numAtoms))
+numLatticesY = math.ceil(numAtoms/numLatticesX)
 for iatom in range(numAtoms):
-	positions[iatom, 0] = (iatom% 4+0.5)*(boxLength/4) + np.random.rand()*0.5
-	positions[iatom, 1] = (iatom//4+0.5)*(boxLength/4) + np.random.rand()*0.5
+	positions[iatom, 0] = (iatom%numLatticesX+0.5)*(boxLength/numLatticesX) + np.random.rand()*0.5
+	positions[iatom, 1] = (math.floor(iatom/numLatticesX)+0.5)*(boxLength/numLatticesY) + np.random.rand()*0.5
 velocities = np.random.rand(numAtoms, 2) - 0.5      # velocities of all particles
 
 masses = np.ones(numAtoms)                          # masses of all particles
